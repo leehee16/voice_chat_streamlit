@@ -28,7 +28,7 @@ try:
     print("OpenAI 클라이언트를 성공적으로 설정했습니다.")
 except Exception as e:
     print(f"OpenAI 클라이언트를 설정하는 중 오류가 발생했습니다: {e}")
-    
+
 ##### 메인 함수 #####
 def main():
     # 페이지 타이틀 설정 / 탭 이름으로 뜸
@@ -49,6 +49,19 @@ def main():
         )
         st.markdown("")
 
+    #contents, 길어서 변수 지정
+    system_content = "You are a thoughtful assistant. Respond to all input in 25 words and answer in korea"
+
+    # session state 초기화
+    if "chat" not in st.session_state:
+        st.session_state["chat"] = []
+
+    if "messages" not in st.session_state:
+        st.session_state["messages"] = [{"role": "system", "content": system_content}]
+
+    if "check_reset" not in st.session_state:
+        st.session_state["check_reset"] = False
+
     # 사이드바 생성
     with st.sidebar:
 
@@ -58,8 +71,20 @@ def main():
 
         # 리셋버튼
         if st.button(label= "초기화") :
-            pass
+             # 리셋 코드 
+            st.session_state["chat"] = []
+            st.session_state["messages"] = [{"role": "system", "content": system_content}]
+            st.session_state["check_reset"] = True
+    
+    # 기능 구현 공간 : 뷰포트에 왼쪽,오른쪽 아래에 공간만들기
+    col1, col2 = st.columns(2)
+    with col1:
+        # 왼쪽 영역 작성
+        st.subheader("질문하기")
 
+    with col2:
+        # 오른쪽 영역 작성
+        st.subheader("질문/답변")
 
 #실행
 if __name__ == "__main__" :
